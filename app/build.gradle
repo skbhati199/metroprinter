@@ -1,0 +1,115 @@
+apply plugin: 'com.android.application'
+android {
+    signingConfigs {
+        config {
+            keyAlias 'hhm'
+            keyPassword 'android'
+            storeFile file('E:/TFSLive/AndriodMobileAPP/AndroidApp_Main/MetroTMSHandleDevice/keystore/tms.jks')
+            storePassword 'android'
+        }
+    }
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.metroinfrasys.metrotms"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 3
+        versionName "3.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        flavorDimensions "default"
+        multiDexEnabled true
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+//            buildConfigField("String", "BASE_URL", "\"http://192.168.3.110:1005\"")
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+//            buildConfigField("String", "BASE_URL", "\"http://192.168.3.110:1005\"")
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    productFlavors {
+        dev {
+            applicationId "com.metroinfrasys.metrotms.dev"
+        }
+        prod {
+            applicationId "com.metroinfrasys.metrotms"
+            signingConfig signingConfigs.config
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/DEPENDENCIES'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':RFIDAPI3Library')
+    // android support libraries
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:animated-vector-drawable:$rootProject.supportLibraryVersion"
+    implementation "com.android.support.constraint:constraint-layout:$rootProject.constraintLayout"
+    // Retrofit API
+    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofit"
+    // parser
+    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofit"
+    // debug database
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:design:28.0.0'
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0'
+    debugImplementation "com.amitshekhar.android:debug-db:$rootProject.debugDBVersion"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation('com.journeyapps:zxing-android-embedded:3.6.0') { transitive = false }
+    implementation 'com.android.support:multidex:1.0.3'
+
+    //RFID
+    implementation 'com.tencent.bugly:nativecrashreport:3.3.1'
+    implementation 'com.tencent.bugly:crashreport_upgrade:1.3.4'
+    implementation 'com.kaopiz:kprogresshud:1.1.0'
+
+
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    api 'com.android.support:appcompat-v7:28.0.0'
+    api 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+    api 'org.greenrobot:eventbus:3.0.0'
+    //7.6.9
+    api 'com.github.SpeedataG:UHF:7.8.7'
+    api 'com.github.SpeedataG:Device:1.6.7'
+    //引用超高频不需要引用下面
+    api 'com.tencent.bugly:nativecrashreport:3.3.1'
+    api 'com.tencent.bugly:crashreport_upgrade:1.3.4'
+    api 'com.kaopiz:kprogresshud:1.1.0'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.1'
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation 'com.android.support:support-v4:28.0.0'
+
+
+}
+
+configurations.all { exclude group: 'com.android.support', module: 'support-v4' }
